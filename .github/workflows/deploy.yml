@@ -1,0 +1,50 @@
+name: Deploy server
+on:
+    release:
+        types: [published]
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [15.x]
+        steps:
+            - uses: actions/checkout@v1
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: Install dependencies
+              uses: borales/actions-yarn@v2.3.0
+              with:
+                  cmd: install
+            - name: Eslint
+              uses: borales/actions-yarn@v2.3.0
+              with:
+                  cmd: lint
+            - name: Copy files to the server
+              uses: Burnett01/rsync-deployments@4.1
+              with:
+                  switches: --exclude "node_modules" --exclude ".github" --exclude ".git" -r -P --delete --no-perms -O
+                  path: ./
+                  remote_path: /var/www/html/api/
+                  remote_host: ${{ secrets.REMOTE_HOST }}
+                  remote_port: ${{ secrets.REMOTE_PORT }}
+                  remote_user: ${{ secrets.REMOTE_USER }}
+                  remote_key: ${{ secrets.SERVER_SSH_KEY }}
+            - name: Install on server
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.REMOTE_HOST }}
+                  username: ${{ secrets.REMOTE_USER }}
+                  key: ${{ secrets.SERVER_SSH_KEY }}
+                  port: ${{ secrets.REMOTE_PORT }}
+                  script: sudo chown -R www-data:www-data /var/www/html/api && sudo chmod -R 775 /var/www/html/api && cd /var/www/html/api && sudo yarn
+            - name: Restart the server
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.REMOTE_HOST }}
+                  username: ${{ secrets.REMOTE_USER }}
+                  key: ${{ secrets.SERVER_SSH_KEY }}
+                  port: ${{ secrets.REMOTE_PORT }}
+                  script: sudo systemctl restart ai

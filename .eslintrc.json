@@ -1,0 +1,47 @@
+{
+    "root": true,
+    "env": {
+        "node": true,
+        "es2021": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2021
+    },
+    "ignorePatterns": ["node_modules"],
+    "plugins": ["eslint-comments", "functional", "node", "immutable"],
+    "extends": ["eslint:recommended", "plugin:node/recommended", "plugin:eslint-comments/recommended", "prettier"],
+    "globals": {"BigInt": true, "console": true, "WebAssembly": true},
+    "rules": {
+        "no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^_",
+                "ignoreRestSiblings": true
+            }
+        ],
+        "eslint-comments/disable-enable-pair": ["error", {"allowWholeFile": true}],
+        "eslint-comments/no-unused-disable": "error",
+        "node/no-unsupported-features/es-syntax": [
+            "off",
+            {
+                "version": ">=15.0.0",
+                "ignores": []
+            }
+        ],
+        "node/no-unsupported-features/node-builtins": [
+            "error",
+            {
+                "version": ">=15.0.0"
+            }
+        ],
+        //        "functional/no-let": "warn",
+        "functional/no-class": "warn",
+        //        "functional/no-this-expression": "warn",
+        //        "functional/functional-parameters": ["off", {
+        //            "enforceParameterCount": false
+        //        }]
+        "immutable/no-let": 1,
+        "immutable/no-this": 1,
+        "immutable/no-mutation": 0
+    }
+}

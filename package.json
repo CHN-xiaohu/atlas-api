@@ -1,0 +1,90 @@
+{
+    "name": "atlas-api",
+    "version": "4.0.5",
+    "main": "src/server.js",
+    "license": "MIT",
+    "type": "module",
+    "dependencies": {
+        "@ant-design/colors": "6.0.0",
+        "axios": "^0.21.1",
+        "body-parser": "^1.19.0",
+        "bufferutil": "^4.0.3",
+        "china-holidays": "^1.8.0",
+        "compression": "^1.7.4",
+        "cors": "^2.8.5",
+        "dayjs": "^1.10.4",
+        "exceljs": "^4.2.0",
+        "express": "^4.17.1",
+        "express-formidable": "^1.2.0",
+        "hsts": "^2.2.0",
+        "immer": "^8.0.1",
+        "instagram-web-api": "^2.2.2",
+        "log-timestamp": "^0.3.0",
+        "mime-types": "^2.1.29",
+        "monk": "^7.3.3",
+        "node-cron": "^2.0.3",
+        "node-fetch": "^2.6.1",
+        "object-hash": "^2.1.1",
+        "qiniu": "^7.3.2",
+        "query-string": "^6.14.0",
+        "ramda": "^0.27.1",
+        "sharp": "^0.27.2",
+        "shelljs": "^0.8.4",
+        "socket.io": "3.1.2",
+        "timezone-mapper": "^1.0.2",
+        "utf-8-validate": "^5.0.4",
+        "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+        "eslint": "^7.20.0",
+        "eslint-config-prettier": "^8.1.0",
+        "eslint-plugin-eslint-comments": "^3.2.0",
+        "eslint-plugin-functional": "^3.2.1",
+        "eslint-plugin-immutable": "^1.0.0",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^3.3.1",
+        "release-it": "^14.4.1"
+    },
+    "scripts": {
+        "start": "nodemon --es-module-specifier-resolution=node src/server.js --exec=\"yarn lint && node\"",
+        "lint": "eslint src",
+        "reloaddb": "bash reloaddb.sh",
+        "release": "release-it"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "trailingComma": "all",
+        "tabWidth": 4,
+        "singleQuote": false,
+        "bracketSpacing": false,
+        "useTabs": false,
+        "jsxBracketSameLine": false,
+        "arrowParens": "avoid",
+        "semi": true,
+        "quoteProps": "as-needed"
+    },
+    "release-it": {
+        "git": {
+            "commit": true,
+            "tag": true,
+            "push": true,
+            "requireBranch": "master"
+        },
+        "github": {
+            "release": true,
+            "proxy": "http://127.0.0.1:7890"
+        },
+        "npm": {
+            "publish": false
+        },
+        "hooks": {
+            "before:init": [
+                "yarn lint"
+            ]
+        }
+    },
+    "optionalDependencies": {
+        "bufferutil": "^4.0.3",
+        "utf-8-validate": "^5.0.4"
+    }
+}
